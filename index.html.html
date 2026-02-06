@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Birthday Surprise 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:'Poppins', sans-serif;
+  text-align:center;
+  overflow:hidden;
+  transition:background 1s;
+}
+
+h1{
+  font-family:'Great Vibes', cursive;
+  font-size:3.5em;
+  animation:fadeIn 2s;
+}
+
+p{
+  font-size:1.3em;
+}
+
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:10px;
+  background:#ff4081;
+  color:white;
+  font-size:16px;
+  margin:10px;
+  cursor:pointer;
+}
+
+.hidden{display:none;}
+
+.fall{
+  position:absolute;
+  top:-50px;
+  font-size:24px;
+  animation:fall 12s linear infinite;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh);}
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px)}
+  to{opacity:1;}
+}
+
+/* slideshow */
+.slideshow img{
+  width:200px;
+  border-radius:20px;
+  margin:10px;
+  animation:fadeIn 2s;
+}
+
+/* fireworks */
+.firework{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:gold;
+  border-radius:50%;
+  animation:explode 1s infinite;
+}
+
+@keyframes explode{
+  from{transform:scale(1); opacity:1}
+  to{transform:scale(4); opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- music -->
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- falling effects -->
+<div id="effects"></div>
+
+<h1 id="step1">It's Your Special Day 💐</h1>
+
+<div id="step2" class="hidden">
+  <p>I made something special for you 💖</p>
+  <p>Do you wanna see it?</p>
+  <button onclick="yes()">Yes</button>
+  <button onclick="no()">No</button>
+</div>
+
+<div id="content" class="hidden"></div>
+
+<script>
+// Falling hearts + roses
+const effects=document.getElementById("effects");
+setInterval(()=>{
+  let e=document.createElement("div");
+  e.className="fall";
+  e.innerHTML=Math.random()>0.5?"❤️":"🌹";
+  e.style.left=Math.random()*100+"vw";
+  e.style.animationDuration=8+Math.random()*5+"s";
+  effects.appendChild(e);
+  setTimeout(()=>e.remove(),12000);
+},300);
+
+// Step change
+setTimeout(()=>{
+  step1.classList.add("hidden");
+  step2.classList.remove("hidden");
+},3000);
+
+function no(){
+  step2.innerHTML="<p style='color:red'>Please say YES 😢</p>";
+}
+
+function yes(){
+  step2.classList.add("hidden");
+  content.classList.remove("hidden");
+  content.innerHTML=`
+    <h1>🎉 Happy Birthday, My Love 🎉</h1>
+    <p>You are the reason behind my smile 💕</p>
+
+    <button onclick="playMusic()">Play Music 🎵</button>
+  `;
+}
+
+function playMusic(){
+  document.getElementById("music").play();
+  showSurprise();
+}
+
+function showSurprise(){
+  content.innerHTML=`
+    <h1>💖 To My Special One 💖</h1>
+    <p>
+      From the moment you came into my life,<br>
+      everything became brighter 🌈<br>
+      I may not say it every day,<br>
+      but you mean the world to me 💌
+    </p>
+
+    <div class="slideshow">
+      <img src="photo1.png">
+      <img src="photo2.png">
+      <img src="photo3.png">
+    </div>
+
+    <button onclick="fireworks()">Final Surprise 🎆</button>
+    <button onclick="share()">Share ❤️</button>
+  `;
+}
+
+function fireworks(){
+  document.body.style.background="white";
+  for(let i=0;i<30;i++){
+    let f=document.createElement("div");
+    f.className="firework";
+    f.style.left=Math.random()*100+"vw";
+    f.style.top=Math.random()*100+"vh";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+  content.innerHTML="<h1 style='color:#ff4081'>🎂 I Love You Forever 🎂</h1>";
+}
+
+function share(){
+  navigator.share({
+    title:"Birthday Surprise",
+    text:"Someone made this special for you 💖",
+    url:window.location.href
+  });
+}
+</script>
+
+</body>
+</html>
